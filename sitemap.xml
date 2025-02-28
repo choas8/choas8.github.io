@@ -155,6 +155,20 @@
 
   
   <url>
+    <loc>https://choas8.github.io/tags/Markdown/</loc>
+    <lastmod>2025-02-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://choas8.github.io/tags/%E5%A4%96%E6%8C%82%E6%A0%87%E7%AD%BE/</loc>
+    <lastmod>2025-02-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://choas8.github.io/tags/Git%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2025-02-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -163,13 +177,6 @@
   
   <url>
     <loc>https://choas8.github.io/tags/Hexo%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2025-02-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://choas8.github.io/tags/Markdown/</loc>
     <lastmod>2025-02-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -189,24 +196,17 @@
     <priority>0.2</priority>
   </url>
   
-  <url>
-    <loc>https://choas8.github.io/tags/%E5%A4%96%E6%8C%82%E6%A0%87%E7%AD%BE/</loc>
-    <lastmod>2025-02-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
   
   <url>
-    <loc>https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/</loc>
+    <loc>https://choas8.github.io/categories/%E6%BC%94%E7%A4%BA/</loc>
     <lastmod>2025-02-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://choas8.github.io/categories/%E6%BC%94%E7%A4%BA/</loc>
+    <loc>https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/</loc>
     <lastmod>2025-02-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
