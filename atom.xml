@@ -6,7 +6,7 @@
   <link href="https://choas8.github.io/atom.xml" rel="self"/>
   
   <link href="https://choas8.github.io/"/>
-  <updated>2025-02-26T07:00:00.000Z</updated>
+  <updated>2025-02-28T08:31:50.000Z</updated>
   <id>https://choas8.github.io/</id>
   
   <author>
@@ -15,6 +15,62 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>自平衡小车PID参数调试实践</title>
+    <link href="https://choas8.github.io/posts/cd760cd8.html"/>
+    <id>https://choas8.github.io/posts/cd760cd8.html</id>
+    <published>2025-02-28T08:31:50.000Z</published>
+    <updated>2025-02-28T08:31:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1>平衡小车容易踩的坑</h1><h2 id="一、直立环的误区">一、直立环的误区</h2><p><strong>坑点1：只加直立环就想调平衡</strong></p><ul><li>仅靠直立环无法实现真平衡（假平衡特征）：<ul><li>抗干扰性差（一推就倒）</li><li>持久性弱（只能平衡片刻）</li><li><em>例外情况：结构设计极佳+重心超低（类似不倒翁原理）时可能实现</em></li></ul></li></ul><p><strong>关键原理</strong>：<br>直立环本质是建立&quot;平衡趋势&quot;，但存在致命缺陷：</p><ol><li><strong>响应滞后</strong>：小车快倒下时才产生足够响应，此时已错过最佳调整时机</li><li><strong>解决方案</strong>：必须加入<strong>正反馈速度环</strong>（注意！四轮车用负反馈，平衡车用正反馈）</li><li><strong>协同作用</strong>：速度环加速累积直立环输出，提升系统响应速度</li></ol><blockquote><p>结论：直立环（建立趋势） + 速度环（加速响应） = 真平衡能力</p></blockquote><hr><h2 id="二、陀螺仪硬件必看">二、陀螺仪硬件必看</h2><p><strong>致命错误</strong>：忘记接INT引脚</p><ul><li>后果：无法触发外部中断 → 无法读取角度数据</li><li>检测方法：观察初始化返回值&quot;err&quot;<ul><li><strong>err=8</strong>：<br>✓ 接线正确但通信异常（接触不良/陀螺仪晃动/未水平放置/硬件损坏）</li><li><strong>err=10</strong>：<br>✓ 引脚接错/硬件损坏/型号不匹配（必须用MPU6050）</li></ul></li></ul><hr><h2 id="三、调参实战步骤（平衡车-平衡方块-平衡单车通用）">三、调参实战步骤（平衡车/平衡方块/平衡单车通用）</h2><h3 id="第一阶段：直立环调试">第一阶段：直立环调试</h3><ol><li><strong>调KP</strong>：<ul><li>持续增大直至出现<strong>大幅度低频抖动</strong> → 略微回调（避免饱和）</li></ul></li><li><strong>加KD</strong>：<ul><li>抑制低频抖动 → 继续增大至<strong>小幅度高频抖动</strong> → 适当回调</li></ul></li><li><strong>衰减参数</strong>：<ul><li>KP/KD同时×0.6 → 系统呈现&quot;疲软&quot;状态（类似KP过小现象）</li></ul></li></ol><h3 id="第二阶段：速度环调试">第二阶段：速度环调试</h3><ol><li><strong>参数关系</strong>：保持 Ki ≈ Kp/200</li><li><strong>操作流程</strong>：<ul><li>加入正反馈速度环（必须确认极性正确）</li><li>同步提升Kp/Ki → 立即显现平衡能力</li><li>继续加大参数减小前后摆动幅度</li></ul></li></ol><h3 id="异常处理：">异常处理：</h3><ul><li><strong>剧烈抖动</strong>：降低速度环参数 或 提升直立环KD</li><li><strong>效果不佳</strong>：检查项<br>✓ 直立环参数是否过小<br>✓ 速度环极性是否错误<br>✓ 是否存在硬件故障</li></ul><h1>PID控制策略核心三问</h1><h2 id="一、增量式-vs-位置式">一、增量式 vs 位置式</h2><p><strong>重点用位置式！</strong><br>增量式底层函数不同且难调试，虽然输出是增量，但函数写法本质还是位置式。特殊情况可通过<strong>位置式输出叠加增量</strong>实现类似效果，但程序结构不改变</p><h2 id="二、串级-vs-并级">二、串级 vs 并级</h2><p><strong>优先并级结构！</strong><br>平衡小车经典案例：<br><code>直立环 + 速度环 + 转向环</code></p><ul><li>直立环与速度环输出直接叠加</li><li>转向环差速处理（左轮+右轮-）</li></ul><p><strong>串级触发条件</strong>：<br>当被控对象已存在基础控制环时（如已有速度环控制小车），需将新控制量（如距离误差）<strong>嵌套为内环设定值</strong>，形成：<br>`距离环输出 → 速度环设定值 → 电机输出</p><h2 id="三、单环-vs-多环">三、单环 vs 多环</h2><p><strong>平衡系必备双环！</strong></p><ul><li><strong>基础配置</strong>：<code>直立环 + 速度环</code>并级</li><li><strong>特例处理</strong>：空心杯电机无编码器时（如风力小车），用<code>直立环P+D+I</code>，以积分项I等效速度环</li><li><strong>功能扩展</strong>：添加转向环实现差速控制，形成三环并级架构</li></ul><h2 id="PID调试工具">PID调试工具</h2><p>仿真验证推荐：<br><a href="https://bitbci.github.io/Tools/pidSimulation/">BitBCI PID Simulator</a><br><a href="https://pid-simulator-web.skythinker.top/">SkyThinker PID实验室</a></p>]]></content>
+    
+    
+    <summary type="html">包含寒假调参的经验。</summary>
+    
+    
+    
+    <category term="技术" scheme="https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    <category term="控制" scheme="https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF/%E6%8E%A7%E5%88%B6/"/>
+    
+    
+    <category term="小车" scheme="https://choas8.github.io/tags/%E5%B0%8F%E8%BD%A6/"/>
+    
+    <category term="PID" scheme="https://choas8.github.io/tags/PID/"/>
+    
+    <category term="调参" scheme="https://choas8.github.io/tags/%E8%B0%83%E5%8F%82/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的第一篇博客</title>
+    <link href="https://choas8.github.io/posts/318586e3.html"/>
+    <id>https://choas8.github.io/posts/318586e3.html</id>
+    <published>2025-02-26T05:40:03.000Z</published>
+    <updated>2025-02-27T14:40:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="欢迎来到我的博客">欢迎来到我的博客</h2><p>这是我的个人博客第一篇文章，建立这个博客主要收获了以下：</p><h3 id="一、掌握技术工具链">一、掌握技术工具链</h3><ul><li><strong>Git版本控制</strong><br>通过博客搭建实战Git操作：<br><code>仓库初始化 -&gt; 代码提交 -&gt; 远程推送</code> 完整工作流</li><li><strong>网站部署实践</strong><br>使用Hexo + GitHub Pages实现自动化部署</li><li><strong>Markdown写作</strong><br>本文即采用标准Markdown语法书写</li></ul><h3 id="二、知识体系化管理">二、知识体系化管理</h3><ul><li>将散落在本地电脑的学习笔记分类归档</li><li>计划未来几年学习的专题：<br>✔️   c语言/PYTHON/<br>✔️   STM32/ESP32/CH32/MSP<br>✔️   FREERTOS/RT-THread<br>✔️   OPENCV<br>✔️   OPENMV/K230<br>✔️   LINUX基础<br>✔️   web全栈（前端后端）<br>✔️   ai的Prompt<br>✔️   PCB<br>✔️   物联网<br>✔️   仿真软件的使用<br>✔️   论文<br>✔️   git基础<br>✔️   QT开发<br>✔️   LVGL开发图形化界面</li></ul><h3 id="三、结语">三、结语</h3><ul><li>我是一名大一小白，欢迎一起学习交流，本站有不足之处，提提意见也是可以的。</li></ul><hr><h2 id="近期更新预告">近期更新预告</h2><p>已完成寒假期间的自平衡小车项目，下篇将分享：<br><strong>《自平衡小车PID参数调试总结》</strong></p>]]></content>
+    
+    
+    <summary type="html">包含为什么我要建立这个博客。</summary>
+    
+    
+    
+    <category term="技术日志" scheme="https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/"/>
+    
+    
+    <category term="Git入门" scheme="https://choas8.github.io/tags/Git%E5%85%A5%E9%97%A8/"/>
+    
+    <category term="Hexo部署" scheme="https://choas8.github.io/tags/Hexo%E9%83%A8%E7%BD%B2/"/>
+    
+    <category term="Markdown" scheme="https://choas8.github.io/tags/Markdown/"/>
+    
+    <category term="博客搭建" scheme="https://choas8.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    
+    <category term="学习笔记" scheme="https://choas8.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>（忘了看看）Markdown语法与外挂标签写法汇总</title>
@@ -36,35 +92,6 @@
     <category term="Markdown" scheme="https://choas8.github.io/tags/Markdown/"/>
     
     <category term="外挂标签" scheme="https://choas8.github.io/tags/%E5%A4%96%E6%8C%82%E6%A0%87%E7%AD%BE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我的第一篇博客</title>
-    <link href="https://choas8.github.io/posts/318586e3.html"/>
-    <id>https://choas8.github.io/posts/318586e3.html</id>
-    <published>2025-02-26T05:40:03.000Z</published>
-    <updated>2025-02-27T14:40:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="欢迎来到我的博客">欢迎来到我的博客</h2><p>这是我的个人博客第一篇文章，建立这个博客主要收获了以下：</p><h3 id="一、掌握技术工具链">一、掌握技术工具链</h3><ul><li><strong>Git版本控制</strong><br>通过博客搭建实战Git操作：<br><code>仓库初始化 -&gt; 代码提交 -&gt; 远程推送</code> 完整工作流</li><li><strong>网站部署实践</strong><br>使用Hexo + GitHub Pages实现自动化部署</li><li><strong>Markdown写作</strong><br>本文即采用标准Markdown语法书写</li></ul><h3 id="二、知识体系化管理">二、知识体系化管理</h3><ul><li>将散落在本地电脑的学习笔记分类归档</li><li>计划未来几年学习的专题：<br>✔️   c语言/PYTHON/<br>✔️   STM32/ESP32/CH32/MSP<br>✔️   FREERTOS/RT-THread<br>✔️   OPENCV<br>✔️   OPENMV/K230<br>✔️   LINUX基础<br>✔️   web全栈（前端后端）<br>✔️   ai的Prompt<br>✔️   PCB<br>✔️   物联网<br>✔️   仿真软件的使用<br>✔️   论文<br>✔️   git基础<br>✔️   QT开发<br>✔️   LVGL开发图形化界面</li></ul><h3 id="三、结语">三、结语</h3><ul><li>我是一名大一小白，欢迎一起学习交流，本站有不足之处，提提意见也是可以的。</li></ul><hr><h2 id="近期更新预告">近期更新预告</h2><p>已完成寒假期间的自平衡小车项目，下篇将分享：<br><strong>《自平衡小车PID参数调试实践》</strong></p>]]></content>
-    
-    
-    <summary type="html">包含为什么我要建立这个博客。</summary>
-    
-    
-    
-    <category term="技术日志" scheme="https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/"/>
-    
-    
-    <category term="Markdown" scheme="https://choas8.github.io/tags/Markdown/"/>
-    
-    <category term="Git入门" scheme="https://choas8.github.io/tags/Git%E5%85%A5%E9%97%A8/"/>
-    
-    <category term="Hexo部署" scheme="https://choas8.github.io/tags/Hexo%E9%83%A8%E7%BD%B2/"/>
-    
-    <category term="博客搭建" scheme="https://choas8.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
-    
-    <category term="学习笔记" scheme="https://choas8.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
