@@ -217,35 +217,6 @@
   </entry>
   
   <entry>
-    <title>我的第一篇博客</title>
-    <link href="https://choas8.github.io/posts/318586e3.html"/>
-    <id>https://choas8.github.io/posts/318586e3.html</id>
-    <published>2025-02-26T05:40:03.000Z</published>
-    <updated>2025-03-04T06:43:45.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="欢迎来到我的博客">欢迎来到我的博客</h2><p>这是我的个人博客第一篇文章，建立这个博客我主要收获了以下：</p><h3 id="一、掌握技术工具链">一、掌握技术工具链</h3><ul><li><strong>Git版本控制</strong><br>通过博客搭建实战Git操作：<br><code>仓库初始化 -&gt; 代码提交 -&gt; 远程推送</code> 完整工作流</li><li><strong>网站部署实践</strong><br>使用Hexo + GitHub Pages实现自动化部署</li><li><strong>Markdown写作</strong><br>本文即采用标准Markdown语法书写</li></ul><h3 id="二、知识体系化管理">二、知识体系化管理</h3><ul><li>将散落在本地电脑的学习笔记分类归档</li><li>计划未来几年学习的专题：<br>✔️   c语言/PYTHON/<br>✔️   STM32/ESP32/CH32/MSP<br>✔️   FREERTOS/RT-THread<br>✔️   OPENCV<br>✔️   OPENMV/K230<br>✔️   LINUX基础<br>✔️   web全栈（前端后端）<br>✔️   ai的Prompt<br>✔️   PCB<br>✔️   物联网<br>✔️   仿真软件的使用<br>✔️   论文<br>✔️   git基础<br>✔️   QT开发<br>✔️   LVGL开发图形化界面</li></ul><h3 id="三、结语">三、结语</h3><ul><li>我是一名大一小白，欢迎一起学习交流，本站有不足之处，提提意见也是可以的。</li></ul>]]></content>
-    
-    
-    <summary type="html">包含为什么我要建立这个博客。</summary>
-    
-    
-    
-    <category term="技术日志" scheme="https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/"/>
-    
-    
-    <category term="Git入门" scheme="https://choas8.github.io/tags/Git%E5%85%A5%E9%97%A8/"/>
-    
-    <category term="Hexo部署" scheme="https://choas8.github.io/tags/Hexo%E9%83%A8%E7%BD%B2/"/>
-    
-    <category term="Markdown" scheme="https://choas8.github.io/tags/Markdown/"/>
-    
-    <category term="博客搭建" scheme="https://choas8.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
-    
-    <category term="学习笔记" scheme="https://choas8.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
     <title>（忘了看看）Markdown语法与外挂标签写法汇总</title>
     <link href="https://choas8.github.io/posts/2013454d.html"/>
     <id>https://choas8.github.io/posts/2013454d.html</id>
@@ -271,6 +242,35 @@
     <category term="Butterfly" scheme="https://choas8.github.io/tags/Butterfly/"/>
     
     <category term="博客写作" scheme="https://choas8.github.io/tags/%E5%8D%9A%E5%AE%A2%E5%86%99%E4%BD%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的第一篇博客</title>
+    <link href="https://choas8.github.io/posts/318586e3.html"/>
+    <id>https://choas8.github.io/posts/318586e3.html</id>
+    <published>2025-02-26T05:40:03.000Z</published>
+    <updated>2025-03-04T06:43:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="欢迎来到我的博客">欢迎来到我的博客</h2><p>这是我的个人博客第一篇文章，建立这个博客我主要收获了以下：</p><h3 id="一、掌握技术工具链">一、掌握技术工具链</h3><ul><li><strong>Git版本控制</strong><br>通过博客搭建实战Git操作：<br><code>仓库初始化 -&gt; 代码提交 -&gt; 远程推送</code> 完整工作流</li><li><strong>网站部署实践</strong><br>使用Hexo + GitHub Pages实现自动化部署</li><li><strong>Markdown写作</strong><br>本文即采用标准Markdown语法书写</li></ul><h3 id="二、知识体系化管理">二、知识体系化管理</h3><ul><li>将散落在本地电脑的学习笔记分类归档</li><li>计划未来几年学习的专题：<br>✔️   c语言/PYTHON/<br>✔️   STM32/ESP32/CH32/MSP<br>✔️   FREERTOS/RT-THread<br>✔️   OPENCV<br>✔️   OPENMV/K230<br>✔️   LINUX基础<br>✔️   web全栈（前端后端）<br>✔️   ai的Prompt<br>✔️   PCB<br>✔️   物联网<br>✔️   仿真软件的使用<br>✔️   论文<br>✔️   git基础<br>✔️   QT开发<br>✔️   LVGL开发图形化界面</li></ul><h3 id="三、结语">三、结语</h3><ul><li>我是一名大一小白，欢迎一起学习交流，本站有不足之处，提提意见也是可以的。</li></ul>]]></content>
+    
+    
+    <summary type="html">包含为什么我要建立这个博客。</summary>
+    
+    
+    
+    <category term="技术日志" scheme="https://choas8.github.io/categories/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/"/>
+    
+    
+    <category term="Markdown" scheme="https://choas8.github.io/tags/Markdown/"/>
+    
+    <category term="Git入门" scheme="https://choas8.github.io/tags/Git%E5%85%A5%E9%97%A8/"/>
+    
+    <category term="Hexo部署" scheme="https://choas8.github.io/tags/Hexo%E9%83%A8%E7%BD%B2/"/>
+    
+    <category term="博客搭建" scheme="https://choas8.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    
+    <category term="学习笔记" scheme="https://choas8.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
